@@ -8,7 +8,10 @@ EKS_CLUSTER_NAME="pepito"
 # Variables de configuración de EKS
 aws eks --region $EKS_REGION update-kubeconfig --name $EKS_CLUSTER_NAME
 # Definir el directorio de los archivos de despliegue
-DEPLOY_DIR="../deployments"
+#!/bin/bash
+
+# Directorio de los archivos de despliegue
+DEPLOY_DIR="../deployment"
 
 # Array de archivos de configuración en el directorio de despliegue
 resources=(
@@ -28,10 +31,15 @@ resources=(
 
 # Aplicar cada recurso con kubectl desde el directorio de despliegue
 for resource in "${resources[@]}"; do
-  echo "Aplicando $resource..."
-  kubectl apply -f "$DEPLOY_DIR/$resource"
-  if [ $? -ne 0 ]; then
-    echo "Error al aplicar $resource. Abortando."
+  if [ -f "$DEPLOY_DIR/$resource" ]; then
+    echo "Aplicando $resource..."
+    kubectl apply -f "$DEPLOY_DIR/$resource"
+    if [ $? -ne 0 ]; then
+      echo "Error al aplicar $resource. Abortando."
+      exit 1
+    fi
+  else
+    echo "El archivo $resource no existe en el directorio $DEPLOY_DIR. Abortando."
     exit 1
   fi
 done
