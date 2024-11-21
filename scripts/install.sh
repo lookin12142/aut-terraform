@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Variables de versión
-TERRAFORM_VERSION="1.4.6"
+TERRAFORM_VERSION="1.9.8"
 KUBECTL_VERSION="v1.23.0"
 
 # Instalar Terraform
