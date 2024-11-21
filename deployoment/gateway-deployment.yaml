@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gateway
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gateway
+  template:
+    metadata:
+      labels:
+        app: gateway
+    spec:
+      containers:
+      - name: gateway
+        image: mcjsus/tiksup-gateway:1.0.5-alpine
+        env:
+        - name: SECRET_KEY
+          value: "YjdkOGIwNzUtNDQwYy00YmVjLTlmNGUtNzBmYzlmMzU4MGQ4Cg=="
+        - name: PORT
+          value: "3000"
+        - name: KAFKA_SERVER
+          value: "161.132.40.126:9092"
+        - name: KAFKA_TOPIC
+          value: "tiksup-interactions"
+        - name: REDIS_HOST
+          value: "161.132.51.114"
+        - name: REDIS_PORT
+          value: "6379"
+        - name: DB_NAME
+          value: "tiksup"
+        - name: DB_HOST
+          value: "161.132.40.126"
+        - name: DB_PORT
+          value: "5432"
+        - name: DB_USER
+          value: "tiksup-super-admin"
+        - name: DB_PASSWORD
+          value: "tiksup-strong-password"
+        - name: MONGO_HOST
+          value: "161.132.40.126"
+        - name: MONGO_PORT
+          value: "27017"
+        - name: MONGO_USER
+          value: "tiksup-super-admin"
+        - name: MONGO_PASSWORD
+          value: "tiksup-strong-password"
+        - name: MONGO_DATABASE
+          value: "tiksup"
+        ports:
+        - containerPort: 3000

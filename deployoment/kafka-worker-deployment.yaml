@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka-worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kafka-worker
+  template:
+    metadata:
+      labels:
+        app: kafka-worker
+    spec:
+      containers:
+      - name: kafka-worker
+        image: mcjsus/tiksup-kafka-worker:1.0.0-alpine
+        env:
+        - name: TARGET_GRPC_SERVER_HOST
+          value: "extractor-worker"
+        - name: TARGET_GRPC_SERVER_PORT
+          value: "50051"
+        - name: KAFKA_SERVER
+          value: "161.132.40.126:9092"
+        - name: KAFKA_TOPIC
+          value: "tiksup-interactions"
+        - name: MONGO_HOST
+          value: "161.132.40.126"
+        - name: MONGO_PORT
+          value: "27017"
+        - name: MONGO_DATABASE
+          value: "tiksup"
+        - name: MONGO_USER
+          value: "tiksup-super-admin"
+        - name: MONGO_PASSWORD
+          value: "tiksup-strong-password"
+        - name: REDIS_HOST
+          value: "161.132.51.114"
+        - name: REDIS_PORT
+          value: "6379"
+        ports:
+        - containerPort: 50051

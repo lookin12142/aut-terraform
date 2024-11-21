@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: recommender
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: recommender
+  template:
+    metadata:
+      labels:
+        app: recommender
+    spec:
+      containers:
+        - name: recommender
+          image: mcjsus/tiksup-recommender:1.0.0
+          env:
+            - name: PORT
+              value: "50052"
+            - name: SPARK_HOST
+              value: "161.132.51.114"
+            - name: SPARK_PORT
+              value: "7077"
+            - name: REDIS_HOST
+              value: "161.132.51.114"
+            - name: REDIS_PORT
+              value: "6379"
+          ports:
+            - containerPort: 50052

@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: client
+  template:
+    metadata:
+      labels:
+        app: client
+    spec: 
+      containers:
+        - name: client
+          image: lucasponce376/clientnextplucas:v1.1.3
+          env:
+            - name: NEXT_PUBLIC_API_URL
+              value: "http://52.55.186.190:32169"
+            - name: PORT
+              value: "3000"
+          ports:
+            - containerPort: 3000
