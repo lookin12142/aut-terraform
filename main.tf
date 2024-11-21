@@ -1,5 +1,5 @@
 provider "aws" {
-  region = "us-east-1" 
+  region = "us-east-1"
 }
 
 resource "aws_vpc" "eks_vpc" {
@@ -12,7 +12,6 @@ resource "aws_vpc" "eks_vpc" {
   }
 }
 
-# Internet Gateway
 resource "aws_internet_gateway" "eks_igw" {
   vpc_id = aws_vpc.eks_vpc.id
 
@@ -21,7 +20,6 @@ resource "aws_internet_gateway" "eks_igw" {
   }
 }
 
-# Route Table
 resource "aws_route_table" "eks_route_table" {
   vpc_id = aws_vpc.eks_vpc.id
 
@@ -35,7 +33,6 @@ resource "aws_route_table" "eks_route_table" {
   }
 }
 
-# Subnets
 resource "aws_subnet" "eks_subnets" {
   count                   = 2
   vpc_id                  = aws_vpc.eks_vpc.id
@@ -50,7 +47,6 @@ resource "aws_subnet" "eks_subnets" {
   }
 }
 
-# Route Table Association
 resource "aws_route_table_association" "eks_route_table_assoc" {
   count          = 2
   subnet_id      = aws_subnet.eks_subnets[count.index].id
@@ -59,9 +55,8 @@ resource "aws_route_table_association" "eks_route_table_assoc" {
 
 data "aws_availability_zones" "available" {}
 
-# EKS Cluster Role
 resource "aws_iam_role" "eks_role" {
-  name = "eks-cluster-role"
+  name = "eks-cluster-role-unique"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [{
@@ -79,7 +74,6 @@ resource "aws_iam_role_policy_attachment" "eks_cluster_policy" {
   role       = aws_iam_role.eks_role.name
 }
 
-# EKS Cluster
 resource "aws_eks_cluster" "eks_cluster" {
   name     = "pepito"
   role_arn = aws_iam_role.eks_role.arn
@@ -95,9 +89,8 @@ resource "aws_eks_cluster" "eks_cluster" {
   ]
 }
 
-# Node Group Role
 resource "aws_iam_role" "node_group_role" {
-  name = "eks-node-group-role"
+  name = "eks-node-group-role-unique"
 
   assume_role_policy = jsonencode({
     Statement = [{
@@ -111,7 +104,6 @@ resource "aws_iam_role" "node_group_role" {
   })
 }
 
-# Node Group Policies
 resource "aws_iam_role_policy_attachment" "node_group_policy_1" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
   role       = aws_iam_role.node_group_role.name
@@ -127,7 +119,6 @@ resource "aws_iam_role_policy_attachment" "node_group_policy_3" {
   role       = aws_iam_role.node_group_role.name
 }
 
-# Node Group
 resource "aws_eks_node_group" "node_group" {
   cluster_name    = aws_eks_cluster.eks_cluster.name
   node_group_name = "my-node-group"
