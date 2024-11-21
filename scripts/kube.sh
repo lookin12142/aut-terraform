@@ -1,5 +1,12 @@
 #!/bin/bash
 
+# Variables de versión
+
+EKS_REGION="us-east-1"
+EKS_CLUSTER_NAME="pepito"
+
+# Variables de configuración de EKS
+aws eks --region $EKS_REGION update-kubeconfig --name $EKS_CLUSTER_NAME
 # Definir el directorio de los archivos de despliegue
 DEPLOY_DIR="../deployments"
 

@@ -2,7 +2,7 @@
 
 SCRIPT_DIR="scripts"
 
-SCRIPTS=("install.sh" "terraform.sh" "kube.sh")
+SCRIPTS=("install.sh" "aws.sh" "terraform.sh" "kube.sh")
 
 for script in "${SCRIPTS[@]}"; do
   SCRIPT_PATH="$SCRIPT_DIR/$script"

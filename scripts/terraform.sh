@@ -1,5 +1,12 @@
 #!/bin/bash
 
+# Verificar si Terraform está instalado
+if ! command -v terraform &> /dev/null
+then
+    echo "Terraform no encontrado. Por favor, instala Terraform antes de continuar."
+    exit 1
+fi
+
 # Inicializar Terraform
 echo "Inicializando Terraform..."
 terraform init
