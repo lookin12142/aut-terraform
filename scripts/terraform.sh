@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Cambiar al directorio raíz donde se encuentra el archivo main.tf
+cd ..
+
 # Verificar si Terraform está instalado
 if ! command -v terraform &> /dev/null
 then
